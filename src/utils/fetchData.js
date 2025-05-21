@@ -10,13 +10,24 @@ export const youtubeOptions = {
   method: "GET",
   headers: {
     "X-RapidAPI-Host": "youtube-search-and-download.p.rapidapi.com",
-    "X-RapidAPI-Key": "99a39bad58msh226b315d72746d7p14963bjsn097f158e00a2",
+    "X-RapidAPI-Key": process.env.REACT_APP_RAPID_API_KEY,
   },
 };
 
-export const fetchData = async (url, options) => {
-  const res = await fetch(url, options);
-  const data = await res.json();
+// Updated API endpoints
+export const EXERCISE_DB_BASE_URL = "https://exercisedb.p.rapidapi.com";
+export const YOUTUBE_SEARCH_BASE_URL = "https://youtube-search-and-download.p.rapidapi.com";
 
-  return data;
+export const fetchData = async (url, options) => {
+  try {
+    const res = await fetch(url, options);
+    if (!res.ok) {
+      throw new Error(`API request failed with status ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
 };
